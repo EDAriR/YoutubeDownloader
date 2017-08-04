@@ -16,33 +16,31 @@
 <body>
 
 <div class="container">
+    <div class="row">
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default">
+            <div class="nav nav-justified navbar-nav">
 
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
-                </button>
-                <a class="navbar-brand" href="#">Project name</a>
+                <form class="navbar-form navbar-search" role="search" action="/results">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control" id="searchText" name="search" placeholder="請輸入關鍵字">
+
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-search btn-default">
+                            GO
+                            </button>
+
+
+                        </div>
+                    </div>
+                </form>
+
             </div>
+        </nav>
+    </div>
 
-            <form class="form" action="/results">
-
-                <div class="form-group">
-                    <label for="searchText" class="sr-only">Password</label>
-                    <input type="text" class="form-control" id="searchText" name="search" placeholder="請輸入關鍵字">
-                </div>
-                <button class="btn btn-outline-success" type="submit"
-                        style="margin-left:46%">
-                    Search
-                </button>
-            </form>
-        </div><!--/.container-fluid -->
-    </nav>
 </div>
-
-
 </body>
 {%endblock%}
 </html>
