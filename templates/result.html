@@ -47,23 +47,15 @@
       </span>
             </li>
             {% for page in range (0,8)%}
-            {%if '{}'.format(page) in all_page%}
-            <li class="page-item">
-                <a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a>
-            </li>
-            {%endif%}
+                {%if '{}'.format(page) in all_page%}
+                    <li class="page-item">
+                        <a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a>
+                    </li>
+                {%endif%}
             {%endfor%}
             <li class="active">
                 <span>1 <span class="sr-only">(current)</span></span>
             </li>
-            <!--{% for page in range (int(current_page),int(current_page)+8)%}
-            {%if '{}'.format(page) in all_page%}
-            <li class="active">
-                  <a href="{{all_page.get('{}'.format(page))}}">{{page}}</a>
-            </li>
-            {%endif%}
-            {%endfor%}-->
-
         </ul>
     </nav>
 </center>
