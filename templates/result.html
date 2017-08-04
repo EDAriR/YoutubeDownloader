@@ -1,65 +1,70 @@
 {% extends "base.html"%}
 
- {% block content%}
+{% block content%}
 <h1>{{search}}</h1>
 {% for item in range (0,21)%} <!--for-->
-    {%if'{}'.format(item) in all_item%}
-        {%if all_item.get('{}'.format(item))['img']!=''%}<!--img不為空才顯示-->
+{%if'{}'.format(item) in all_item%}
+{%if all_item.get('{}'.format(item))['img']!=''%}<!--img不為空才顯示-->
 
 <div class="card">
- <a href="{{all_item.get('{}'.format(item))['link']}}">
-     <h4>
-         {{all_item.get('{}'.format(item))['title']}}
-     </h4>
- </a>
+    <a href="{{all_item.get('{}'.format(item))['link']}}">
+        <h4>
+            {{all_item.get('{}'.format(item))['title']}}
+        </h4>
+    </a>
 
- <div class="card-block">
-  <a href="{{all_item.get('{}'.format(item))['link']}}">
-       <img src="{{all_item.get('{}'.format(item))['img']}}" alt="{{all_item.get('{}'.format(item))['title']}}" width="360" height="240">
-   </a>
+    <div class="card-block">
+        <a href="{{all_item.get('{}'.format(item))['link']}}">
+            <img src="{{all_item.get('{}'.format(item))['img']}}" alt="{{all_item.get('{}'.format(item))['title']}}"
+                 width="360" height="240">
+        </a>
 
-  <p class="card-text">
-      <small class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i>
-          &nbsp;{{all_item.get('{}'.format(item))['time']}}
-      </small>
-  </p>
-  <form action="/download" target="_blank">
-      <button type="submit" class="btn btn-warning btn-form" name="value" value="MP3&{{all_item.get('{}'.format(item))['link']}}">MP3</button>
-      <button type="submit" class="btn btn-danger btn-form" name="value" value="MP4&{{all_item.get('{}'.format(item))['link']}}">MP4</button>
+        <p class="card-text">
+            <small class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                &nbsp;{{all_item.get('{}'.format(item))['time']}}
+            </small>
+        </p>
+        <form action="/download" target="_blank">
+            <button type="submit" class="btn btn-warning btn-form" name="value"
+                    value="MP3&{{all_item.get('{}'.format(item))['link']}}">MP3
+            </button>
+            <button type="submit" class="btn btn-danger btn-form" name="value"
+                    value="MP4&{{all_item.get('{}'.format(item))['link']}}">MP4
+            </button>
 
-  </form>
-  </div>
+        </form>
+    </div>
 </div>
-        {%endif%}
-    {%endif%}
+{%endif%}
+{%endif%}
 {%endfor%}
 <center>
     <nav aria-label="...">
-  <ul class="pagination">
-    <li class="disabled">
+        <ul class="pagination">
+            <li class="disabled">
       <span>
         <span aria-hidden="true">&laquo;</span>
       </span>
-    </li>
-    {% for page in range (0,8)%}
+            </li>
+            {% for page in range (0,8)%}
             {%if '{}'.format(page) in all_page%}
             <li class="page-item">
                 <a class="page-link" href="{{all_page.get('{}'.format(page))}}&current_page={{page}}">{{page}}</a>
             </li>
             {%endif%}
-    {%endfor%}
-    <li class="active">
-      <span>1 <span class="sr-only">(current)</span></span>
-    </li>
-    <!--{% for page in range (int(current_page),int(current_page)+8)%}
-	{%if '{}'.format(page) in all_page%}
-    <li class="active">
-          <a href="{{all_page.get('{}'.format(page))}}">{{page}}</a>
-    </li>
-    {%endif%}
-    {%endfor%}-->
+            {%endfor%}
+            <li class="active">
+                <span>1 <span class="sr-only">(current)</span></span>
+            </li>
+            <!--{% for page in range (int(current_page),int(current_page)+8)%}
+            {%if '{}'.format(page) in all_page%}
+            <li class="active">
+                  <a href="{{all_page.get('{}'.format(page))}}">{{page}}</a>
+            </li>
+            {%endif%}
+            {%endfor%}-->
 
-  </ul>
-</nav>
+        </ul>
+    </nav>
 </center>
 {%endblock%}

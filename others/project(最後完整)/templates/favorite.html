@@ -1,0 +1,31 @@
+{% extends "base.html"%}
+{% block content%}
+{% for video in user_video%}
+<div class="card">
+    <div class="card-block">
+        <a href="{{video.link}}"><h4 class="card-title">
+            {{video.title}}</h4></a>
+    </div>
+    <div class="card-block">
+        <a href="{{video.link}}"><img class="card-img-top"
+                                      src="{{video.img}}"
+                                      alt="Card image cap" width="196" height="110"></a>
+        <form action="/download" target="_blank">
+            <br>
+            <button type="submit" class="btn btn-warning btn-form" name="value"
+                    value="MP3&{{video.link}}"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;MP3
+            </button>
+            <button type="submit" class="btn btn-danger btn-form" name="value"
+                    value="MP4&{{video.link}}"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;MP4
+            </button>
+        </form>
+        <form action="/delete" method="post">
+            <input type="hidden" name="link" value="{{video.link}}">
+            <button type="submit" class="btn btn-warning btn-form"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;Delete
+            </button>
+        </form>
+    </div>
+</div>
+
+{%endfor%}
+{%endblock%}
