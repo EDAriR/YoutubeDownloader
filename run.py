@@ -37,6 +37,7 @@ def download():
         item.download_mp3(url)
         return render_template("download.html")
     elif download_type == "MP4":
+        print('value' + value)
         item.download_mp4(url)
         return render_template("download.html")
 

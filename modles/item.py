@@ -67,6 +67,7 @@ def download_mp3(url):
 
 
 def download_mp4(url):
+    print(url)
     ydl_opts = {'format': 'best', 'outtmpl': '/video/%(title)s.%(ext)s'}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
