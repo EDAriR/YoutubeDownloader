@@ -1,3 +1,5 @@
+[Build Status]
+
 youtube-dl - download videos from youtube.com or other video platforms
 
 -   INSTALLATION
@@ -59,9 +61,9 @@ DESCRIPTION
 YOUTUBE-DL is a command-line program to download videos from YouTube.com
 and a few more sites. It requires the Python interpreter, version 2.6,
 2.7, or 3.2+, and it is not platform specific. It should work on your
-Unix box, on Windows or on Mac OS X. It is released to the public
-domain, which means you can modify it, redistribute it or use it however
-you like.
+Unix box, on Windows or on macOS. It is released to the public domain,
+which means you can modify it, redistribute it or use it however you
+like.
 
     youtube-dl [OPTIONS] URL [URL...]
 
@@ -172,18 +174,18 @@ Video Selection:
     --max-views COUNT                Do not download any videos with more than
                                      COUNT views
     --match-filter FILTER            Generic video filter. Specify any key (see
-                                     help for -o for a list of available keys)
-                                     to match if the key is present, !key to
-                                     check if the key is not present, key >
-                                     NUMBER (like "comment_count > 12", also
-                                     works with >=, <, <=, !=, =) to compare
-                                     against a number, key = 'LITERAL' (like
-                                     "uploader = 'Mike Smith'", also works with
-                                     !=) to match against a string literal and &
-                                     to require multiple matches. Values which
-                                     are not known are excluded unless you put a
-                                     question mark (?) after the operator. For
-                                     example, to only match videos that have
+                                     the "OUTPUT TEMPLATE" for a list of
+                                     available keys) to match if the key is
+                                     present, !key to check if the key is not
+                                     present, key > NUMBER (like "comment_count
+                                     > 12", also works with >=, <, <=, !=, =) to
+                                     compare against a number, key = 'LITERAL'
+                                     (like "uploader = 'Mike Smith'", also works
+                                     with !=) to match against a string literal
+                                     and & to require multiple matches. Values
+                                     which are not known are excluded unless you
+                                     put a question mark (?) after the operator.
+                                     For example, to only match videos that have
                                      been liked more than 100 times and disliked
                                      less than 50 times (or the dislike
                                      functionality is not available at the given
@@ -210,18 +212,26 @@ Download Options:
     -R, --retries RETRIES            Number of retries (default is 10), or
                                      "infinite".
     --fragment-retries RETRIES       Number of retries for a fragment (default
-                                     is 10), or "infinite" (DASH and hlsnative
-                                     only)
-    --skip-unavailable-fragments     Skip unavailable fragments (DASH and
-                                     hlsnative only)
+                                     is 10), or "infinite" (DASH, hlsnative and
+                                     ISM)
+    --skip-unavailable-fragments     Skip unavailable fragments (DASH, hlsnative
+                                     and ISM)
     --abort-on-unavailable-fragment  Abort downloading when some fragment is not
                                      available
+    --keep-fragments                 Keep downloaded fragments on disk after
+                                     downloading is finished; fragments are
+                                     erased by default
     --buffer-size SIZE               Size of download buffer (e.g. 1024 or 16K)
                                      (default is 1024)
     --no-resize-buffer               Do not automatically adjust the buffer
                                      size. By default, the buffer size is
                                      automatically resized from an initial value
                                      of SIZE.
+    --http-chunk-size SIZE           Size of a chunk for chunk-based HTTP
+                                     downloading (e.g. 10485760 or 10M) (default
+                                     is disabled). May be useful for bypassing
+                                     bandwidth throttling imposed by a webserver
+                                     (experimental)
     --playlist-reverse               Download playlist videos in reverse order
     --playlist-random                Download playlist videos in random order
     --xattr-set-filesize             Set file xattribute ytdl.filesize with
@@ -309,8 +319,8 @@ Verbosity / Simulation Options:
     --get-filename                   Simulate, quiet but print output filename
     --get-format                     Simulate, quiet but print output format
     -j, --dump-json                  Simulate, quiet but print JSON information.
-                                     See --output for a description of available
-                                     keys.
+                                     See the "OUTPUT TEMPLATE" for a description
+                                     of available keys.
     -J, --dump-single-json           Simulate, quiet but print JSON information
                                      for each command-line argument. If the URL
                                      refers to a playlist, dump the whole
@@ -444,12 +454,14 @@ Post-processing Options:
     --add-metadata                   Write metadata to the video file
     --metadata-from-title FORMAT     Parse additional metadata like song title /
                                      artist from the video title. The format
-                                     syntax is the same as --output, the parsed
-                                     parameters replace existing values.
-                                     Additional templates: %(album)s,
-                                     %(artist)s. Example: --metadata-from-title
-                                     "%(artist)s - %(title)s" matches a title
-                                     like "Coldplay - Paradise"
+                                     syntax is the same as --output. Regular
+                                     expression with named capture groups may
+                                     also be used. The parsed parameters replace
+                                     existing values. Example: --metadata-from-
+                                     title "%(artist)s - %(title)s" matches a
+                                     title like "Coldplay - Paradise". Example
+                                     (regex): --metadata-from-title
+                                     "(?P<artist>.+?) - (?P<title>.+)"
     --xattrs                         Write metadata to the video file's xattrs
                                      (using dublin core and xdg standards)
     --fixup POLICY                   Automatically correct known faults of the
@@ -469,7 +481,7 @@ Post-processing Options:
                                      syntax. Example: --exec 'adb push {}
                                      /sdcard/Music/ && rm {}'
     --convert-subs FORMAT            Convert the subtitles to other format
-                                     (currently supported: srt|ass|vtt)
+                                     (currently supported: srt|ass|vtt|lrc)
 
 
 
@@ -540,7 +552,9 @@ To activate authentication with the .netrc file you should pass --netrc
 to youtube-dl or place it in the configuration file.
 
 On Windows you may also need to setup the %HOME% environment variable
-manually.
+manually. For example:
+
+    set HOME=%USERPROFILE%
 
 
 
@@ -553,7 +567,7 @@ names.
 TL;DR: navigate me to examples.
 
 The basic usage is not to set any template arguments when downloading a
-single file, like in youtube-dl -o funny_video.flv "http://some/video".
+single file, like in youtube-dl -o funny_video.flv "https://some/video".
 However, it may contain special sequences that will be replaced when
 downloading each video. The special sequences may be formatted according
 to python string formatting operations. For example, %(NAME)s or
@@ -587,6 +601,12 @@ with sequence type are:
     used depends on the webpage
 -   comment_count (numeric): Number of comments on the video
 -   age_limit (numeric): Age restriction for the video (years)
+-   is_live (boolean): Whether this video is a live stream or a
+    fixed-length video
+-   start_time (numeric): Time in seconds where the reproduction should
+    start, as specified in the URL
+-   end_time (numeric): Time in seconds where the reproduction should
+    end, as specified in the URL
 -   format (string): A human-readable description of the format
 -   format_id (string): Format code specified by --format
 -   format_note (string): Additional info about the format
@@ -616,30 +636,43 @@ with sequence type are:
     with leading zeros according to the total length of the playlist
 -   playlist_id (string): Playlist identifier
 -   playlist_title (string): Playlist title
+-   playlist_uploader (string): Full name of the playlist uploader
+-   playlist_uploader_id (string): Nickname or id of the playlist
+    uploader
 
 Available for the video that belongs to some logical chapter or section:
-- chapter (string): Name or title of the chapter the video belongs to -
-chapter_number (numeric): Number of the chapter the video belongs to -
-chapter_id (string): Id of the chapter the video belongs to
+
+-   chapter (string): Name or title of the chapter the video belongs to
+-   chapter_number (numeric): Number of the chapter the video belongs to
+-   chapter_id (string): Id of the chapter the video belongs to
 
 Available for the video that is an episode of some series or programme:
-- series (string): Title of the series or programme the video episode
-belongs to - season (string): Title of the season the video episode
-belongs to - season_number (numeric): Number of the season the video
-episode belongs to - season_id (string): Id of the season the video
-episode belongs to - episode (string): Title of the video episode -
-episode_number (numeric): Number of the video episode within a season -
-episode_id (string): Id of the video episode
 
-Available for the media that is a track or a part of a music album: -
-track (string): Title of the track - track_number (numeric): Number of
-the track within an album or a disc - track_id (string): Id of the track
-- artist (string): Artist(s) of the track - genre (string): Genre(s) of
-the track - album (string): Title of the album the track belongs to -
-album_type (string): Type of the album - album_artist (string): List of
-all artists appeared on the album - disc_number (numeric): Number of the
-disc or other physical medium the track belongs to - release_year
-(numeric): Year (YYYY) when the album was released
+-   series (string): Title of the series or programme the video episode
+    belongs to
+-   season (string): Title of the season the video episode belongs to
+-   season_number (numeric): Number of the season the video episode
+    belongs to
+-   season_id (string): Id of the season the video episode belongs to
+-   episode (string): Title of the video episode
+-   episode_number (numeric): Number of the video episode within a
+    season
+-   episode_id (string): Id of the video episode
+
+Available for the media that is a track or a part of a music album:
+
+-   track (string): Title of the track
+-   track_number (numeric): Number of the track within an album or a
+    disc
+-   track_id (string): Id of the track
+-   artist (string): Artist(s) of the track
+-   genre (string): Genre(s) of the track
+-   album (string): Title of the album the track belongs to
+-   album_type (string): Type of the album
+-   album_artist (string): List of all artists appeared on the album
+-   disc_number (numeric): Number of the disc or other physical medium
+    the track belongs to
+-   release_year (numeric): Year (YYYY) when the album was released
 
 Each aforementioned sequence when referenced in an output template will
 be replaced by the actual value corresponding to the sequence name. Note
@@ -683,7 +716,8 @@ should stay intact: -o "C:\%HOMEPATH%\Desktop\%%(title)s.%%(ext)s".
 
 Output template examples
 
-Note on Windows you may need to use double quotes instead of single.
+Note that on Windows you may need to use double quotes instead of
+single.
 
     $ youtube-dl --get-filename -o '%(title)s.%(ext)s' BaW_jenozKc
     youtube-dl test video ''_ä↭𝕐.mp4    # All kinds of weird characters
@@ -701,7 +735,7 @@ Note on Windows you may need to use double quotes instead of single.
     $ youtube-dl -u user -p password -o '~/MyVideos/%(playlist)s/%(chapter_number)s - %(chapter)s/%(title)s.%(ext)s' https://www.udemy.com/java-tutorial/
 
     # Download entire series season keeping each series and each season in separate directory under C:/MyVideos
-    $ youtube-dl -o "C:/MyVideos/%(series)s/%(season_number)s - %(season)s/%(episode_number)s - %(episode)s.%(ext)s" http://videomore.ru/kino_v_detalayah/5_sezon/367617
+    $ youtube-dl -o "C:/MyVideos/%(series)s/%(season_number)s - %(season)s/%(episode_number)s - %(episode)s.%(ext)s" https://videomore.ru/kino_v_detalayah/5_sezon/367617
 
     # Stream the video being downloaded to stdout
     $ youtube-dl -o - BaW_jenozKc
@@ -782,8 +816,8 @@ fields: - ext: File extension - acodec: Name of the audio codec in use -
 vcodec: Name of the video codec in use - container: Name of the
 container format - protocol: The protocol that will be used for the
 actual download, lower-case (http, https, rtsp, rtmp, rtmpe, mms, f4m,
-ism, m3u8, or m3u8_native) - format_id: A short description of the
-format
+ism, http_dash_segments, m3u8, or m3u8_native) - format_id: A short
+description of the format
 
 Note that none of the aforementioned meta fields are guaranteed to be
 present since this solely depends on the metadata obtained by particular
@@ -830,7 +864,8 @@ file in order not to type it every time you run youtube-dl.
 
 Format selection examples
 
-Note on Windows you may need to use double quotes instead of single.
+Note that on Windows you may need to use double quotes instead of
+single.
 
     # Download best mp4 format available or any other best if no mp4 available
     $ youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
@@ -890,7 +925,7 @@ If you have installed youtube-dl using a package manager like _apt-get_
 or _yum_, use the standard system update mechanism to update. Note that
 distribution packages are often outdated. As a rule of thumb, youtube-dl
 releases at least once a month, and often weekly or even daily. Simply
-go to http://yt-dl.org/ to find out the current version. Unfortunately,
+go to https://yt-dl.org to find out the current version. Unfortunately,
 there is nothing we youtube-dl developers can do if your distribution
 serves a really outdated version. You can (and should) complain to your
 distribution in their bugtracker or support forum.
@@ -1095,11 +1130,11 @@ all of your downloads, put the option into your configuration file.
 
 How do I download a video starting with a -?
 
-Either prepend http://www.youtube.com/watch?v= or separate the ID from
+Either prepend https://www.youtube.com/watch?v= or separate the ID from
 the options with --:
 
     youtube-dl -- -wNyEUrxzFU
-    youtube-dl "http://www.youtube.com/watch?v=-wNyEUrxzFU"
+    youtube-dl "https://www.youtube.com/watch?v=-wNyEUrxzFU"
 
 How do I pass cookies to youtube-dl?
 
@@ -1115,8 +1150,8 @@ first line of the cookies file must be either # HTTP Cookie File or
 # Netscape HTTP Cookie File. Make sure you have correct newline format
 in the cookies file and convert newlines if necessary to correspond with
 your OS, namely CRLF (\r\n) for Windows and LF (\n) for Unix and
-Unix-like systems (Linux, Mac OS, etc.). HTTP Error 400: Bad Request
-when using --cookies is a good sign of invalid newline format.
+Unix-like systems (Linux, macOS, etc.). HTTP Error 400: Bad Request when
+using --cookies is a good sign of invalid newline format.
 
 Passing cookies to youtube-dl is a good way to workaround login when a
 particular extractor does not implement it explicitly. Another use case
@@ -1130,7 +1165,7 @@ You will first need to tell youtube-dl to stream media to stdout with
 capable of this for streaming) and then pipe former to latter. For
 example, streaming to vlc can be achieved with:
 
-    youtube-dl -o - "http://www.youtube.com/watch?v=BaW_jenozKcj" | vlc -
+    youtube-dl -o - "https://www.youtube.com/watch?v=BaW_jenozKcj" | vlc -
 
 How do I download only new videos from a playlist?
 
@@ -1227,7 +1262,7 @@ How can I detect whether a given URL is supported by youtube-dl?
 
 For one, have a look at the list of supported sites. Note that it can
 sometimes happen that the site changes its URL scheme (say, from
-http://example.com/video/1234567 to http://example.com/v/1234567 ) and
+https://example.com/video/1234567 to https://example.com/v/1234567 ) and
 youtube-dl reports an URL of a service in that list as unsupported. In
 that case, simply report a bug.
 
@@ -1291,6 +1326,9 @@ test file directly; any of the following work:
     python test/test_download.py
     nosetests
 
+See item 6 of new extractor tutorial for how to run extractor specific
+test cases.
+
 If you want to create a build of youtube-dl yourself, you'll need
 
 -   python
@@ -1332,7 +1370,7 @@ yourextractor):
         class YourExtractorIE(InfoExtractor):
             _VALID_URL = r'https?://(?:www\.)?yourextractor\.com/watch/(?P<id>[0-9]+)'
             _TEST = {
-                'url': 'http://yourextractor.com/watch/42',
+                'url': 'https://yourextractor.com/watch/42',
                 'md5': 'TODO: md5 sum of the first 10241 bytes of the video file (use --test)',
                 'info_dict': {
                     'id': '42',
@@ -1369,7 +1407,8 @@ yourextractor):
     _TEST to _TESTS and make it into a list of dictionaries. The tests
     will then be named TestDownload.test_YourExtractor,
     TestDownload.test_YourExtractor_1,
-    TestDownload.test_YourExtractor_2, etc.
+    TestDownload.test_YourExtractor_2, etc. Note that tests with
+    only_matching key in test's dict are not counted in.
 7.  Have a look at youtube_dl/extractor/common.py for possible helper
     methods and a detailed description of what your extractor should and
     may return. Add tests and code for as many as you want.
@@ -1567,7 +1606,7 @@ fashion, like this:
 
     ydl_opts = {}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(['http://www.youtube.com/watch?v=BaW_jenozKc'])
+        ydl.download(['https://www.youtube.com/watch?v=BaW_jenozKc'])
 
 Most likely, you'll want to use various options. For a list of options
 available, have a look at youtube_dl/YoutubeDL.py. For a start, if you
@@ -1608,7 +1647,7 @@ downloads/converts the video to an mp3 file:
         'progress_hooks': [my_hook],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(['http://www.youtube.com/watch?v=BaW_jenozKc'])
+        ydl.download(['https://www.youtube.com/watch?v=BaW_jenozKc'])
 
 
 
@@ -1630,7 +1669,7 @@ to this:
     $ youtube-dl -v <your command line>
     [debug] System config: []
     [debug] User config: []
-    [debug] Command-line args: [u'-v', u'http://www.youtube.com/watch?v=BaW_jenozKcj']
+    [debug] Command-line args: [u'-v', u'https://www.youtube.com/watch?v=BaW_jenozKcj']
     [debug] Encodings: locale cp1251, fs mbcs, out cp866, pref cp1251
     [debug] youtube-dl version 2015.12.06
     [debug] Git HEAD: 135392e
@@ -1685,9 +1724,9 @@ command-line) or upload the .dump files you get when you add
 
 SITE SUPPORT REQUESTS MUST CONTAIN AN EXAMPLE URL. An example URL is a
 URL you might want to download, like
-http://www.youtube.com/watch?v=BaW_jenozKc. There should be an obvious
+https://www.youtube.com/watch?v=BaW_jenozKc. There should be an obvious
 video present. Except under very special circumstances, the main page of
-a video service (e.g. http://www.youtube.com/) is _not_ an example URL.
+a video service (e.g. https://www.youtube.com/) is _not_ an example URL.
 
 Are you using the latest version?
 

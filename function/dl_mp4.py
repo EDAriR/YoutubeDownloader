@@ -3,4 +3,4 @@ import youtube_dl
 
 ydl_opts = {'outtmpl': 'download/%(title)s.%(ext)s'}
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-    ydl.download(['https://www.youtube.com/watch?v=lXznUoPCJLM&list=PLXO45tsB95cI7ZleLM5i3XXhhe9YmVrRO&index=6'])
+    ydl.download(['https://www.youtube.com/watch?v=qeI3CjcxZVU'])
