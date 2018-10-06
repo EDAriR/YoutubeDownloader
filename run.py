@@ -34,8 +34,27 @@ def download():
     value = request.args.get('value')
     download_type, url = value.split("&")
     if download_type == "MP3":
-        item.download_mp3(url)
-        return render_template("download.html")
+        title = item.download_mp3(url)
+        import os
+        arr = os.listdir('.')
+        for filename in arr:
+            if title in filename:
+                def generate():
+                    with open(filename, "rb") as fogg:
+                        data = fogg.read(1024)
+                        while data:
+                            yield data
+                            data = fogg.read(1024)
+
+                from flask import Response
+                return Response(generate(), mimetype="audio/ogg")
+        return {
+            'audio': open(filename, 'rb'),
+            'title': filename,
+        }
+        # return render_template("download.html")
+
+
     elif download_type == "MP4":
         print('value' + value)
         item.download_mp4(url)

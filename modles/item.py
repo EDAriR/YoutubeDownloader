@@ -62,10 +62,36 @@ def download_mp3(url):
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
-        }]
+        }],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
+        result = ydl.extract_info(
+            url,
+            download=False  # We just want to extract the info
+        )
+        if 'entries' in result:
+            # Can be a playlist or a list of videos
+            video = result['entries'][0]
+        else:
+            # Just a video
+            video = result
+
+        print(video)
+        video_url = video['url']
+        print(video_url)
+
+    request = requests.get(url)  # get url
+    cont = request.content  # content 找出編碼
+    soup = BeautifulSoup(cont, "html.parser")  # (content,HTML 解析)
+
+    title = soup.findAll('meta' ,{"property": 'og:title'})[0]['content']
+    print('{}.mp3'.format(title))
+    print(type(title))
+    # title = str(title).format('\n','').strip()
+    print(title)
+
+    return title
 
 
 def download_mp4(url):
