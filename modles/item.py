@@ -56,13 +56,6 @@ def page_bar(soup):
 
 
 def download_mp3(url):
-    ydl_opts = {'format': 'bestaudio/best', 'outtmpl': '/video/%(title)s.%(ext)s',
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }]}
-
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
@@ -71,14 +64,12 @@ def download_mp3(url):
             'preferredquality': '192',
         }]
     }
-    print(url)
-    print('/video/%(title)s.%(ext)s')
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
 
 def download_mp4(url):
     print(url)
-    ydl_opts = {'format': 'best', 'outtmpl': '/video/%(title)s.%(ext)s'}
+    ydl_opts = {'format': 'best'}
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
