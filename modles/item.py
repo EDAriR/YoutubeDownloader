@@ -62,6 +62,17 @@ def download_mp3(url):
                     'preferredcodec': 'mp3',
                     'preferredquality': '192',
                 }]}
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }]
+    }
+    print(url)
+    print('/video/%(title)s.%(ext)s')
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
