@@ -8,6 +8,7 @@ youtube-dl = "==2018.10.5"
 requests = "*"
 pymongo = "*"
 "bs4" = "*"
+gunicorn = "*"
 
 [dev-packages]
 
