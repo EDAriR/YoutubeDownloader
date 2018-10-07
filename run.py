@@ -48,11 +48,7 @@ def download():
 
                 from flask import Response
                 return Response(generate(), mimetype="audio/ogg")
-        return {
-            'audio': open(filename, 'rb'),
-            'title': filename,
-        }
-        # return render_template("download.html")
+        return render_template("download.html")
 
 
     elif download_type == "MP4":
