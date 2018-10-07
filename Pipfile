@@ -9,6 +9,8 @@ requests = "*"
 pymongo = "*"
 "bs4" = "*"
 gunicorn = "*"
+flask = "*"
+"beautifulsoup4" = "*"
 
 [dev-packages]
 
