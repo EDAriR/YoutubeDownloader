@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from modles import item
+
 app = Flask(__name__)
 
 
@@ -11,13 +12,13 @@ def hello():
 @app.route("/results")
 def result_page():
     page = request.args.get('sp')
-    if page == None :
+    if page == None:
         search = request.args.get('search')
         soup = item.find_search_content(search)
         all_item = item.every_video(soup)
         all_page = item.page_bar(soup)
-        return render_template("result.html", search=search, all_item=all_item,all_page=all_page)
-    elif page != None :
+        return render_template("result.html", search=search, all_item=all_item, all_page=all_page)
+    elif page != None:
         search = request.args.get('q')
         page = request.args.get('sp')
         current_page = request.args.get('current_page')
@@ -25,7 +26,7 @@ def result_page():
         soup = item.find_page_content(value)
         all_item = item.every_video(soup)
         all_page = item.page_bar(soup)
-        return render_template("result.html",  search=search, all_item=all_item,all_page=all_page,
+        return render_template("result.html", search=search, all_item=all_item, all_page=all_page,
                                current_page=current_page, int=int)
 
 
@@ -48,12 +49,6 @@ def download():
 
                 from flask import Response
                 return Response(generate(), mimetype="audio/ogg")
-        return render_template("download.html")
-
-
-    elif download_type == "MP4":
-        print('value' + value)
-        item.download_mp4(url)
         return render_template("download.html")
 
 
