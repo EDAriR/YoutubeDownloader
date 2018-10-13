@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from modles import item
 
 app = Flask(__name__)
@@ -52,5 +52,15 @@ def download():
         return render_template("download.html")
 
 
+@app.route("/json/<key_id>", methods=['POST'])
+def getJsonTest(key_id):
+    json = request.get_json(force=True)
+    print(json)
+    print(json['appIds'])
+    print(type(json))
+    json['appIds'] = key_id
+    return jsonify(json)
+
+
 if __name__ == "__main__":
-    app.run(port=80, debug=True)
+    app.run(port=8080, debug=True)
