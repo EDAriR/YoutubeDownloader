@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from modles import item
 
 app = Flask(__name__)
@@ -58,8 +58,11 @@ def getJsonTest(key_id):
     print(json)
     print(json['appIds'])
     print(type(json))
+    query_string = request.query_string
+    print("query: " + query_string)
     json['appIds'] = key_id
-    return jsonify(json)
+    # Access - Control - Allow - Origin: *
+    return Response(jsonify(json), header='Access - Control - Allow - Origin: *')
 
 
 if __name__ == "__main__":
