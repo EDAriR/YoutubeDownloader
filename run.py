@@ -1,12 +1,34 @@
 from flask import Flask, render_template, request, jsonify, Response
 from modles import item
 
+import os
+import subprocess
+import sys
+import logging
+import shutil
+# from werkzeug import secure_filename
+
 app = Flask(__name__)
+
+app.logger.setLevel(logging.ERROR)
+app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['TEMP_FOLDER'] = '/tmp'
+app.config['OCR_OUTPUT_FILE'] = 'ocr'
 
 
 @app.route("/")
 def hello():
     return render_template("base.html")
+
+
+@app.errorhandler(404)
+def not_found(error):
+  resp = jsonify( {
+    u'status': 404,
+    u'message': u'Resource not found'
+  } )
+  resp.status_code = 404
+  return resp
 
 
 @app.route("/results")
@@ -56,14 +78,32 @@ def download():
 def getJsonTest(key_id):
     json = request.get_json(force=True)
     print(json)
-    print(json['appIds'])
+    # print(json['appIds'])
     print(type(json))
+    # query_string = request.args.get('first_name')
     query_string = request.query_string
-    print("query: " + query_string)
-    json['appIds'] = key_id
-    # Access - Control - Allow - Origin: *
-    return Response(jsonify(json), header='Access - Control - Allow - Origin: *')
+    print("query: " + str(query_string))
+    # json['appIds'] = key_id
+    # Access - Control - Allow - Origin: * Access-Control-Expose-Headers: Access-Control-Allow-Origin
+    # headers = {
+    #     'Access-Control-Expose-Headers': 'Access-Control-Allow-Origin',
+    #     'Access - Control - Allow - Origin': '*'
+    # }
+    return Response(jsonify(json))
 
+
+
+'''
+https://github.com/matteotiziano/secret-harbor
+https://elements.heroku.com/buildpacks/matteotiziano/heroku-buildpack-tesseract
+'''
+def allowed_file(filename):
+  return '.' in filename and filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff'])
+
+
+@app.route('/test', methods = ['GET'])
+def test():
+  return render_template('upload_form.html', landing_page = 'process')
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)

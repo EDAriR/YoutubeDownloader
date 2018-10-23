@@ -11,6 +11,7 @@ pymongo = "*"
 gunicorn = "*"
 flask = "*"
 "beautifulsoup4" = "*"
+werkzeug = "*"
 
 [dev-packages]
 
