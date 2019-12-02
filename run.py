@@ -6,6 +6,7 @@ import subprocess
 import sys
 import logging
 import shutil
+
 # from werkzeug import secure_filename
 
 app = Flask(__name__)
@@ -23,12 +24,12 @@ def hello():
 
 @app.errorhandler(404)
 def not_found(error):
-  resp = jsonify( {
-    u'status': 404,
-    u'message': u'Resource not found'
-  } )
-  resp.status_code = 404
-  return resp
+    resp = jsonify({
+        u'status': 404,
+        u'message': u'Resource not found'
+    })
+    resp.status_code = 404
+    return resp
 
 
 @app.route("/results")
@@ -52,26 +53,6 @@ def result_page():
                                current_page=current_page, int=int)
 
 
-@app.route("/download")
-def download():
-    value = request.args.get('value')
-    download_type, url = value.split("&")
-    if download_type == "MP3":
-        title = item.download_mp3(url)
-        import os
-        arr = os.listdir('.')
-        for filename in arr:
-            if title in filename:
-                def generate():
-                    with open(filename, "rb") as fogg:
-                        data = fogg.read(1024)
-                        while data:
-                            yield data
-                            data = fogg.read(1024)
-
-                from flask import Response
-                return Response(generate(), mimetype="audio/ogg")
-        return render_template("download.html")
 
 
 @app.route("/json/<key_id>", methods=['POST'])
@@ -92,18 +73,10 @@ def getJsonTest(key_id):
     return Response(jsonify(json))
 
 
-
-'''
-https://github.com/matteotiziano/secret-harbor
-https://elements.heroku.com/buildpacks/matteotiziano/heroku-buildpack-tesseract
-'''
-def allowed_file(filename):
-  return '.' in filename and filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff'])
-
-
-@app.route('/test', methods = ['GET'])
+@app.route('/test', methods=['GET'])
 def test():
-  return render_template('upload_form.html', landing_page = 'process')
+    return render_template('upload_form.html', landing_page='process')
+
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
