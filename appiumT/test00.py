@@ -4,7 +4,7 @@ import time
 from appium.webdriver.common.touch_action import TouchAction
 from appium import webdriver
 
-Keys
+# Keys
 
 desired_caps = {
                 # 'platformName': 'iOS',

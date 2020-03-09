@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-youtube-dl = "==2018.10.5"
+youtube-dl = "*"
 requests = "*"
 pymongo = "*"
 "bs4" = "*"
@@ -16,7 +16,7 @@ appium-python-client = "*"
 seleium = "*"
 selenium = "*"
 jieba = "*"
-scipy-misc = "*"
+#scipy-misc = "*"
 imread = "*"
 scipy = "*"
 lxml = "*"
