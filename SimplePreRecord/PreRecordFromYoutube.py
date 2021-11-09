@@ -72,7 +72,7 @@ def main(argv):
         yt_url = argv[1]
         wait_dl(ydl_opts, yt_url)
     else:
-        print('need url like: https://youtu.be/your_video_path')
+        print('need url like: https://youtu.be/{your_video_path}')
 
 
 def wait_dl(ydl_opts, yt_url):
@@ -90,9 +90,14 @@ def wait_dl(ydl_opts, yt_url):
 
         print('--------')
 
-        if 'event will begin' in str(i):
+        print('i am ' + str(i))
 
-            print('i am ' + str(i))
+        if 'few' in str(i):
+
+            time.sleep(60)
+            wait_dl(ydl_opts, yt_url)
+
+        elif 'event will begin' in str(i):
 
             if 'in a few moments' in str(i):
                 t = '1'
@@ -106,9 +111,7 @@ def wait_dl(ydl_opts, yt_url):
 
             count_down(t, t_str)
             wait_dl(ydl_opts, yt_url)
-        elif 'wait' in str(i):
-            time.sleep(60)
-            wait_dl(ydl_opts, yt_url)
+
         else:
             print(i)
 
