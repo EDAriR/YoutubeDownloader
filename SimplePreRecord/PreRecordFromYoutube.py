@@ -11,7 +11,8 @@ ydl_opts = {
     'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
     'merge_output_format': 'mp4',
     'writethumbnail' : True,
-    'nocheckcertificate': True
+    'nocheckcertificate': True,
+    "nopart": True
 }
 
 mp3_opts = {
@@ -27,20 +28,21 @@ mp3_opts = {
 
 
 def dl_main(opts, url):
-    opts.update({'cookiefile' : 'youtube.com_cookies.txt'})
+    opts.update({'cookiefile': 'youtube.com_cookies.txt'})
     with youtube_dl.YoutubeDL(opts) as ydl:
         ydl.download([url])
 
 
-def count_down(num, t_name):
+def count_down(num, t_name='分鐘', wait_sec=60):
     t_num = int(num)
-    wait_sec = 60
 
-    if t_name != 'minutes' or t_name != '分鐘':
-        print('wait ' + num + ' ' + t_name)
+    # if t_name != 'minutes' or t_name != '分鐘':
+    #     print('wait ' + num + ' ' + t_name)
     if t_name == 'hours':
-        print('wait ' + num + ' ' + t_name)
+        # print('wait ' + num + ' ' + t_name)
         t_num = t_num * 60
+
+    print('wait ' + num + ' ' + t_name)
 
     print('Start count down : ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     for i in range(t_num):
@@ -80,9 +82,9 @@ def main(argv):
 
 def wait_dl(ydl_opts, yt_url):
 
-    t = 1
-    t_str = 'minutes'
-    i = ''
+    # t = 1
+    # t_str = 'minutes'
+    # i = ''
 
     try:
         dl_main(ydl_opts, yt_url)
@@ -100,8 +102,7 @@ def wait_dl(ydl_opts, yt_url):
         print('i am ' + str(i))
 
         if 'few' in i or '這場現場直播將於幾分鐘後開始' in i:
-
-            time.sleep(10)
+            count_down(0, wait_sec=10)
 
         elif 'event will begin' in i or '將於' in i:
 
